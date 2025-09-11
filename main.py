@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI
 from sqlmodel import SQLModel
 import uvicorn
-from database import engine, get_db
+from app.database import engine, get_db
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import AsyncSession
