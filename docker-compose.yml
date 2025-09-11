@@ -1,0 +1,58 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '078'
+      POSTGRES_DB: hurry_up_hackathon
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # mosquitto:
+  #   image: eclipse-mosquitto:latest
+  #   restart: always
+  #   ports:
+  #     - '1883:1883'
+  #     - '9001:9001'
+  #   volumes:
+  #     - ./mosquitto-no-auth.conf:/mosquitto/config/mosquitto.conf
+  #   networks:
+  #     - app-network
+
+  web:
+    build: .
+    restart: always
+    ports:
+      - '8000:8000'
+    environment:
+      - APP_NAME=Hurry Up Hackathon
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DATABASE_URL=postgresql+asyncpg://postgres:078@db:5432/hurry_up_hackathon
+      - SECRET_KEY=${SECRET_KEY}
+      - PORT=8000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - ./uploads:/app/uploads
+
+networks:
+  app-network:
+    driver: bridge
