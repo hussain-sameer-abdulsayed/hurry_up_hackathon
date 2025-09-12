@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.services.fingerprint_service import FingerPrintService
 
-router = APIRouter(prefix="/fingerprints", tags=["Fingerprints"])
+router = APIRouter(responses= {404 : {"description":"Not found"}})
 
 @router.post("/save")
 async def save_fingerprint(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):

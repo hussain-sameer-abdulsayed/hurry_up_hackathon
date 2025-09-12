@@ -3,7 +3,7 @@ from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 from app.database import engine
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import fingerprint_service
+from app.routers import api_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,7 +27,7 @@ app.add_middleware(
 )
 
 # Routers
-app.include_router(fingerprint_service.router)
+app.include_router(api_router, prefix="/")
 
 @app.get("/")
 async def root():
