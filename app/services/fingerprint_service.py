@@ -7,7 +7,7 @@ from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repos.fingerprint_repo import FingerPrintRepository
-from app.schemas.finger_print import FingerPrintCreate
+from app.schemas.finger_print import FingerPrintCreate, FingerPrintRead, VerifiyFingerResponse
 from app.models.finger_print import FingerPrint
 
 
@@ -70,10 +70,11 @@ class FingerPrintService:
         ))
         return fp
 
-    async def list_fingerprints(self) -> List[FingerPrint]:
-        return await self.repo.get_all()
+    async def list_fingerprints(self) -> List[FingerPrintRead]:
+        fps = await self.repo.get_all()
+        return [FingerPrintRead.model_validate(fp) for fp in fps]
 
-    async def verify_fingerprint(self, file_bytes: bytes, threshold: float = 0.8) -> dict:
+    async def verify_fingerprint(self, file_bytes: bytes, threshold: float = 0.8) -> VerifiyFingerResponse:
         """Compare uploaded fingerprint with stored ones"""
         img = self.capture_from_upload(file_bytes)
         preprocessed = self.preprocess_image(img)
@@ -85,18 +86,18 @@ class FingerPrintService:
         for fp in stored:
             similarity = self.compare_templates(template, fp.template_data)
             if similarity >= threshold:
-                return {
-                    "verified": True,
-                    "matched_fingerprint_id": str(fp.id),
-                    "confidence_score": similarity,
-                    "message": "Fingerprint verified successfully"
-                }
+                return VerifiyFingerResponse(
+                    verified= True,
+                    matched_fingerprint_id= str(fp.id),
+                    confidence_score= similarity,
+                    message= "Fingerprint verified successfully"
+                )
 
-        return {
-            "verified": False,
-            "confidence_score": 0.0,
-            "message": "No matching fingerprint found"
-        }
+        return VerifiyFingerResponse(
+            verified= False,
+            confidence_score= 0.0,
+            message= "No matching fingerprint found"
+        )
 
     # ----------------------
     # Matching Algorithm
@@ -108,3 +109,8 @@ class FingerPrintService:
         if not set1 or not set2:
             return 0.0
         return len(set1 & set2) / len(set1 | set2)
+
+
+    async def clear_all_fingerprints(self) -> int:
+        """Clear all fingerprints from database"""
+        return await self.repo.delete_all()

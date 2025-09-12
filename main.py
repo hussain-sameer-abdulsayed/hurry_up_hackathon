@@ -33,5 +33,3 @@ app.include_router(api_router)
 async def root():
     return {"message": "Hurry Up Hackathon API is running 🚀"}
 
-
-@app.post("/")
