@@ -87,7 +87,7 @@ class FingerPrintService:
             if similarity >= threshold:
                 return {
                     "verified": True,
-                    "matched_fingerprint_id": fp.id,
+                    "matched_fingerprint_id": str(fp.id),
                     "confidence_score": similarity,
                     "message": "Fingerprint verified successfully"
                 }
