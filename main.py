@@ -17,14 +17,12 @@ async def lifespan(app: FastAPI):
    yield
    await engine.dispose()
 
-
 app = FastAPI(
    title= os.getenv("APP_NAME", "Hurry Up Hackathon"),
    description="Best Team",
    version="1",
    lifespan=lifespan
 )
-
 
 app.add_middleware(
    CORSMiddleware,
@@ -33,6 +31,17 @@ app.add_middleware(
    allow_methods=["*"],
    allow_headers=["*"],
 )
+
+
+def preprocess_image(self, image: )
+
+
+
+
+
+
+
+
 
 
 
@@ -46,18 +55,16 @@ async def root():
       "environment": os.getenv("APP_ENV", "development")
    }
 
+
 @app.get("/health")
 async def health_check(db: AsyncSession = Depends(get_db)):
     return {"status": "healthy", "database": "connected"}
-
 
 @app.post("/")
 async def upload_file(
    file: UploadFile,
 ):
    return file
-
-
 
 if __name__ == "__main__":
    uvicorn.run(
