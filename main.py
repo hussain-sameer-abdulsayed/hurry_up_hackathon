@@ -1,27 +1,21 @@
-from fastapi import Depends, FastAPI, UploadFile
+from fastapi import FastAPI
 from sqlmodel import SQLModel
-import uvicorn
-from app.database import engine, get_db
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from sqlalchemy.ext.asyncio import AsyncSession
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.database import engine
+from fastapi.middleware.cors import CORSMiddleware
+from app.routers import fingerprint_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-   async with engine.begin() as conn:
-      await conn.run_sync(SQLModel.metadata.create_all)
-   yield
-   await engine.dispose()
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+    yield
+    await engine.dispose()
 
 app = FastAPI(
-   title= os.getenv("APP_NAME", "Hurry Up Hackathon"),
-   description="Best Team",
-   version="1",
-   lifespan=lifespan
+    title="Hurry Up Hackathon",
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -32,44 +26,9 @@ app.add_middleware(
    allow_headers=["*"],
 )
 
-
-def preprocess_image(self, image: )
-
-
-
-
-
-
-
-
-
-
+# Routers
+app.include_router(fingerprint_router.router)
 
 @app.get("/")
 async def root():
-   return {
-      "Hurry Up Hackathon": "Best Team Ever! ok?",
-      "docs": "/docs",
-      "redoc": "/redoc",
-      "version": "1.0.0",
-      "environment": os.getenv("APP_ENV", "development")
-   }
-
-
-@app.get("/health")
-async def health_check(db: AsyncSession = Depends(get_db)):
-    return {"status": "healthy", "database": "connected"}
-
-@app.post("/")
-async def upload_file(
-   file: UploadFile,
-):
-   return file
-
-if __name__ == "__main__":
-   uvicorn.run(
-      "main:app",
-      host="0.0.0.0",
-      port=os.getenv("PORT", 8000),
-      reload=os.getenv("APP_ENV") != "production"
-   )
+    return {"message": "Hurry Up Hackathon API is running 🚀"}
