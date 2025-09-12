@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, UploadFile
 from sqlmodel import SQLModel
 import uvicorn
 from app.database import engine, get_db
@@ -49,6 +49,14 @@ async def root():
 @app.get("/health")
 async def health_check(db: AsyncSession = Depends(get_db)):
     return {"status": "healthy", "database": "connected"}
+
+
+@app.post("/")
+async def upload_file(
+   file: UploadFile,
+):
+   return file
+
 
 
 if __name__ == "__main__":
