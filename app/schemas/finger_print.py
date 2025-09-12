@@ -44,7 +44,7 @@ class CreationResponse(BaseModel):
 class VerifiyFingerResponse(BaseModel):
     verified: bool
     matched_fingerprint_id: Optional[str]
-    confidence_score: Optional[str]
+    confidence_score: float
     message: str
 
     """
