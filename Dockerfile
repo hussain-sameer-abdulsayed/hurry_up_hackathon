@@ -9,10 +9,17 @@ ENV PYTHONPATH=/app
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies for OpenCV and PostgreSQL
 RUN apt-get update && apt-get install -y \
     gcc \
     postgresql-client \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -35,4 +42,4 @@ USER appuser
 EXPOSE 8000
 
 # Run app with uvicorn
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
