@@ -45,7 +45,7 @@ async def list_fingerprints(db: AsyncSession = Depends(get_db)) -> List[FingerPr
     
     return fingerprints
 
-@router.delete("/clear", status_code= status.HTTP_204_NO_CONTENT)
+@router.delete("/clear", status_code= status.HTTP_200_OK)
 async def clear_all_fingerprints(db: AsyncSession = Depends(get_db)) -> int:
     """Clear all fingerprints from database"""
     service = FingerPrintService(db)
