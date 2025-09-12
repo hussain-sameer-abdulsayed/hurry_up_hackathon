@@ -63,7 +63,6 @@ urllib3==2.5.0
 uvicorn==0.35.0 
 watchfiles==1.1.0 
 websockets==15.0.1 
-spacy==3.8.7 
 fastapi-mqtt==2.2.0 
 paho-mqtt==1.6.1 
 redis==4.6.0
@@ -71,7 +70,7 @@ asyncio-mqtt==0.16.1
 charset_normalizer==3.4.3 
 requests==2.32.5
 pytz==2025.2
-opencv-python==4.12.0.88
+opencv-python==4.10.0.84
 Pillow==11.3.0
-numpy==2.3.3
-scikit-learn==1.7.2
+numpy==2.2.0
+scikit-learn==1.5.1
