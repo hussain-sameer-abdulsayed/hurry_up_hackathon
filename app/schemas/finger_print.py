@@ -37,7 +37,7 @@ class CreationResponse(BaseModel):
     status: ResponseStatus
     fingerprint_id: Optional[str]
     minutiae_count: Optional[int]
-    quality_score: Optional[float]
+    quality_score: float
     enrollment_timestamp: Optional[datetime]
 
 
