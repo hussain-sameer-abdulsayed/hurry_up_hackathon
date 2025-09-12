@@ -150,6 +150,8 @@ alembic.ini
 
 # Docker
 .dockerignore
+docker-compose.yml
+render.yaml
 
 # Coverage / Reports
 reports/
