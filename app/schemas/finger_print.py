@@ -24,7 +24,7 @@ class FingerPrintRead(BaseModel):
     minutiae_count: int
     quality_score: float
     enrollment_timestamp: datetime
-    filename: Optional[str]
+    filename: Optional[str] = None
 
 class VerificationResponse(BaseModel):
     verified: bool
@@ -35,15 +35,15 @@ class VerificationResponse(BaseModel):
 
 class CreationResponse(BaseModel):
     status: ResponseStatus
-    fingerprint_id: Optional[str]
-    minutiae_count: Optional[int]
+    fingerprint_id: Optional[str] = None
+    minutiae_count: Optional[int] = None
     quality_score: float
-    enrollment_timestamp: Optional[datetime]
+    enrollment_timestamp: Optional[datetime] = None
 
 
 class VerifiyFingerResponse(BaseModel):
     verified: bool
-    matched_fingerprint_id: Optional[str]
+    matched_fingerprint_id: Optional[str] = None
     confidence_score: float
     message: str
 

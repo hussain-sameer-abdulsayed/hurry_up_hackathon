@@ -5,6 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.schemas.finger_print import CreationResponse, FingerPrintRead, ResponseStatus, VerifiyFingerResponse
 from app.services.fingerprint_service import FingerPrintService
+from app.models.finger_print import FingerPrint
+
+
 
 router = APIRouter(responses= {404 : {"description":"Not found"}})
 
@@ -39,7 +42,7 @@ async def verify_fingerprint(file: UploadFile = File(...), db: AsyncSession = De
 
 
 @router.get("/list", status_code= status.HTTP_200_OK)
-async def list_fingerprints(db: AsyncSession = Depends(get_db)) -> List[FingerPrintRead]:
+async def list_fingerprints(db: AsyncSession = Depends(get_db)) -> List[FingerPrint]:
     service = FingerPrintService(db)
     fingerprints = await service.list_fingerprints()
     
